@@ -1,0 +1,14 @@
+﻿{
+  "Information": [ "Omnichannel Wallet API Service" ],
+  "profile": "",
+  "region": "us-east-1",
+  "configuration": "Release",
+  "framework": "netcoreapp2.2",
+  "function-runtime": "provided",
+  "function-memory-size": "512",
+  "function-timeout": 180,
+  "function-handler": "Omnichannel.Wallet::Omnichannel.Wallet.API.LambdaEntryPoint::FunctionHandlerAsync",
+  "function-name": "Omnichannel-Wallet",
+  "tracing-mode": "PassThrough",
+  "msbuild-parameters": "--self-contained true"
+}

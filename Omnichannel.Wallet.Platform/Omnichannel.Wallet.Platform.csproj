@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="Domain\" />
+        <Folder Include="Domain\Accounts\" />
+        <Folder Include="Infrastructure\" />
+        <Folder Include="Application\" />
+        <Folder Include="Application\Accounts\" />
+        <Folder Include="Application\Accounts\Queries\" />
+        <Folder Include="Application\Accounts\Commands\" />
+        <Folder Include="Infrastructure\Database\" />
+        <Folder Include="Infrastructure\IOC\" />
+        <Folder Include="Application\Accounts\Commands\Actions\" />
+        <Folder Include="Application\Accounts\Queries\Filters\" />
+        <Folder Include="Application\Accounts\Queries\DTOs\" />
+        <Folder Include="Infrastructure\Database\MySQL\" />
+        <Folder Include="Infrastructure\Database\MySQL\Repositories\" />
+        <Folder Include="Infrastructure\Database\MySQL\Configurations\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+        <PackageReference Include="Core.Framework.Entities" Version="1.2.0" />
+        <PackageReference Include="Core.Framework.Repository" Version="2.0.12" />
+        <PackageReference Include="Core.Framework.Blockchain" Version="1.0.3" />
+        <PackageReference Include="Core.Framework.Cqrs" Version="1.0.1" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.4" />
+    </ItemGroup>
+</Project>
