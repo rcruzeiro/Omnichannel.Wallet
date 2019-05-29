@@ -15,7 +15,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Queries.Filters
         public string CPF { get; set; }
 
         public GetAccountsFilter(string company, string cpf)
-            : base(ac => ac.Company == company && ac.CPF == cpf)
+            : base(ac => ac.Company == company && ac.CPF == cpf && ac.Balance > 0)
         {
             Includes.Add(ac => ac.Transactions);
             Company = company;
@@ -23,7 +23,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Queries.Filters
         }
 
         public GetAccountsFilter(string company, string cpf, AccountType accountType)
-            : base(ac => ac.Company == company && ac.CPF == cpf && ac.AccountType == accountType)
+            : base(ac => ac.Company == company && ac.CPF == cpf && ac.AccountType == accountType && ac.Balance > 0)
         {
             Includes.Add(ac => ac.Transactions);
             Company = company;
