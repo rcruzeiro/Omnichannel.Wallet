@@ -62,16 +62,19 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
 
                 command.Validate(null);
 
-                var accounts = await _accountRepository.GetVouchers(ac =>
+                // get any account type
+                var accounts = await _accountRepository.GetAsync(ac =>
                         ac.Company == command.Company &&
                         ac.CPF == command.CPF &&
-                        ac.AccountId == command.AccountId &&
-                        ac.ExpiresOn.HasValue && ac.ExpiresOn.Value <= DateTimeOffset.Now);
+                        ac.AccountId == command.AccountId);
 
                 if (!accounts.Any()) throw new InvalidOperationException("invalid account.");
 
                 // get the selected account
                 var single = accounts.Single();
+
+                // validate account for change
+                ValidateAccountForChange(single);
 
                 // consume from balance
                 single.Consume(command.Value, command.Location);
@@ -92,18 +95,21 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
 
                 command.Validate(null);
 
+                // get only giftcards
                 var accounts = await _accountRepository.GetGiftcards(ac =>
                         ac.Company == command.Company &&
-                        ac.AccountId == command.AccountId &&
-                        ac.ExpiresOn.HasValue && ac.ExpiresOn.Value <= DateTimeOffset.Now);
+                        ac.AccountId == command.AccountId);
 
                 if (!accounts.Any()) throw new InvalidOperationException("invalid account.");
 
                 // get the selected account
                 var single = accounts.Single();
 
+                // validate account for change
+                ValidateAccountForChange(single);
+
                 // throw exception if the giftcard already registered by a CPF
-                if (single.CPF == "00000000000") throw new InvalidOperationException("CPF already registered.");
+                if (single.CPF != "00000000000") throw new InvalidOperationException("CPF already registered.");
 
                 // register the giftcard with new CPF
                 single.Register(command.CPF);
@@ -124,16 +130,19 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
 
                 command.Validate(null);
 
+                // get only giftcards
                 var accounts = await _accountRepository.GetGiftcards(ac =>
                         ac.Company == command.Company &&
                         ac.CPF == command.CPF &&
-                        ac.AccountId == command.AccountId &&
-                        ac.ExpiresOn.HasValue && ac.ExpiresOn.Value <= DateTimeOffset.Now);
+                        ac.AccountId == command.AccountId);
 
                 if (!accounts.Any()) throw new InvalidOperationException("invalid account.");
 
                 // get the selected account
                 var single = accounts.Single();
+
+                // validate account for change
+                ValidateAccountForChange(single);
 
                 // charge giftcard
                 single.Charge(command.Value, command.Location);
@@ -144,6 +153,12 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
             }
             catch (Exception ex)
             { throw ex; }
+        }
+
+        private void ValidateAccountForChange(Account account)
+        {
+            if (account.ExpiresOn.HasValue)
+                if (account.ExpiresOn.Value < DateTimeOffset.Now) throw new InvalidOperationException("account expired.");
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Framework.Repository;
-using Microsoft.EntityFrameworkCore;
 using Omnichannel.Wallet.Platform.Domain.Accounts;
 
 namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Repositories
@@ -19,10 +18,10 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Repositories
         {
             try
             {
-                var query = Context.Set<Account>()
-                    .OfType<VoucherAccount>();
+                var query = Context.Set<VoucherAccount>()
+                    .Where(predicate);
 
-                return await (predicate == null ? query.ToListAsync() : Task.FromResult(query.Where(predicate).ToList()));
+                return await Task.FromResult(query.ToList());
             }
             catch (Exception ex)
             { throw ex; }
@@ -32,10 +31,10 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Repositories
         {
             try
             {
-                var query = Context.Set<Account>()
-                    .OfType<GiftcardAccount>();
+                var query = Context.Set<GiftcardAccount>()
+                    .Where(predicate);
 
-                return await (predicate == null ? query.ToListAsync() : Task.FromResult(query.Where(predicate).ToList()));
+                return await Task.FromResult(query.ToList());
             }
             catch (Exception ex)
             { throw ex; }

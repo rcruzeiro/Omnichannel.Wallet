@@ -25,7 +25,8 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Configuratio
 
             // discriminator
             builder.HasDiscriminator<int>("accountType")
-                .HasValue<VoucherAccount>(1);
+                .HasValue<VoucherAccount>(1)
+                .HasValue<GiftcardAccount>(2);
 
             // navigation (has to be navigation field because transactions list is read-only)
             var navigation =

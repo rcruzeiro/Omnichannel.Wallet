@@ -23,6 +23,7 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL
         {
             // map inherit account types
             modelBuilder.Entity<VoucherAccount>();
+            modelBuilder.Entity<GiftcardAccount>();
 
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
