@@ -22,7 +22,17 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts
             _accountsQueryHandler = accountsQueryHandler ?? throw new ArgumentNullException(nameof(accountsQueryHandler));
         }
 
-        public async Task CreateVoucher(CreateVoucherCommand command, CancellationToken cancellationToken = default)
+        public async Task<string> CreateVoucher(CreateVoucherCommand command, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await _accountsCommandHandler.ExecuteAsync(command, cancellationToken);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public async Task Consume(ConsumeAccountCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -42,7 +52,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts
             { throw ex; }
         }
 
-        public async Task<AccountDTO> GetAccount(GetAccountFilter filter, CancellationToken cancellationToken = default)
+        public async Task<AccountDTO> GetAccounts(GetAccountFilter filter, CancellationToken cancellationToken = default)
         {
             try
             {

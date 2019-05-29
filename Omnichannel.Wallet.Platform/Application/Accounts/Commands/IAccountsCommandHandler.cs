@@ -4,7 +4,7 @@ using Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions;
 namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
 {
     public interface IAccountsCommandHandler :
-        ICommandHandlerAsync<CreateVoucherCommand>
-    {
-    }
+        ICommandHandlerAsync<CreateVoucherCommand, string>,
+        ICommandHandlerAsync<ConsumeAccountCommand>
+    { }
 }

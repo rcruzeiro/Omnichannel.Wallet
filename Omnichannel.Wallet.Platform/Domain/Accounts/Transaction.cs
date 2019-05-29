@@ -4,14 +4,15 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
 {
     public class Transaction : ValueObject
     {
+        private int accountId;
         public Account Account { get; private set; }
 
         public string Location { get; private set; }
 
-        private readonly int operationType;
+        private int operationType;
         public virtual OperationType OperationType => (OperationType)operationType;
 
-        private readonly int eventType;
+        private int eventType;
         public virtual EventType EventType => (EventType)eventType;
 
         public decimal Value { get; private set; }
@@ -21,6 +22,7 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
 
         internal Transaction(Account account, string location, OperationType operationType, EventType eventType, decimal value)
         {
+            accountId = account.ID;
             Account = account;
             Location = location;
             Value = value;

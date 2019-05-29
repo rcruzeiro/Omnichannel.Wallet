@@ -18,7 +18,7 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Configuratio
             builder.Property(ac => ac.Balance).HasColumnName("balance").IsRequired();
             builder.Property(ac => ac.ExpiresOn).HasColumnName("expires_on");
             builder.Property(ac => ac.CreatedAt).HasColumnName("created_at").IsRequired();
-            builder.Property(ac => ac.UpdatedAt).HasColumnName("updated_at").IsRequired();
+            builder.Property(ac => ac.UpdatedAt).HasColumnName("updated_at");
 
             //ignore property (for now)
             builder.Ignore(ac => ac.ExtensionAttributes);

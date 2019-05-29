@@ -10,6 +10,7 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Configuratio
         {
             builder.ToTable("transactions").HasIndex(t => t.ID);
             builder.Property(t => t.ID).HasColumnName("id");
+            builder.Property<int>("accountId").HasColumnName("account_id").IsRequired();
             builder.Property(t => t.Location).HasColumnName("location");
             builder.Property<int>("operationType").HasColumnName("operation_type").IsRequired();
             builder.Property<int>("eventType").HasColumnName("event_type").IsRequired();
@@ -19,6 +20,7 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Configuratio
             // relationships
             builder.HasOne(t => t.Account)
                 .WithMany(ac => ac.Transactions)
+                .HasForeignKey("accountId")
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
