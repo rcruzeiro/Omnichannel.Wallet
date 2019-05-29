@@ -87,6 +87,39 @@ namespace Omnichannel.Wallet.API.Controllers
             }
         }
         /// <summary>
+        /// Gets the CPF associated giftcard accounts.
+        /// </summary>
+        /// <returns>The CPF giftcard accounts.</returns>
+        /// <param name="request">Route parameters.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="200">Return giftcard accounts, if any, with no errors.</response>
+        /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [ProducesResponseType(typeof(GetCPFAccountsResponse), 200)]
+        [ProducesResponseType(typeof(GetCPFAccountsResponse), 500)]
+        [HttpGet("{CPF}/giftcard")]
+        public async Task<IActionResult> GetCPFGiftcardAccounts([FromRoute]GetCPFAccountsRequest request, CancellationToken cancellationToken = default)
+        {
+            GetCPFAccountsResponse response = new GetCPFAccountsResponse();
+
+            try
+            {
+                var filter = new GetAccountsFilter(request.Company, request.CPF, AccountType.Giftcard);
+                var result = await _accountsAppService.GetAccounts(filter, cancellationToken);
+
+                response.StatusCode = 200;
+                response.Data = result;
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Messages.Add(ResponseMessage.Create(ex, ""));
+
+                return StatusCode(500, response);
+            }
+        }
+        /// <summary>
         /// Gets an specifict account by his unique identifier.
         /// </summary>
         /// <returns>The requested account.</returns>
