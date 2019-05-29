@@ -5,6 +5,9 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands
 {
     public interface IAccountsCommandHandler :
         ICommandHandlerAsync<CreateVoucherCommand, string>,
-        ICommandHandlerAsync<ConsumeAccountCommand>
+        ICommandHandlerAsync<CreateGiftcardCommand, string>,
+        ICommandHandlerAsync<ConsumeAccountCommand>,
+        ICommandHandlerAsync<RegisterGiftcardCommand>,
+        ICommandHandlerAsync<ChargeGiftcardCommand>
     { }
 }

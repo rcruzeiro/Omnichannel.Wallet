@@ -1,30 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Core.Framework.Cqrs.Commands;
+using Omnichannel.Wallet.Platform.Domain.Accounts;
 
 namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 {
-    public class ConsumeAccountCommand : ICommand
+    public class CreateGiftcardCommand : ICommand
     {
         [Required]
         public string Company { get; set; }
-
-        [Required]
-        public string CPF { get; set; }
-
-        [Required]
-        public string AccountId { get; set; }
 
         [Required]
         public decimal Value { get; set; }
 
         public string Location { get; set; }
 
-        public ConsumeAccountCommand(string company, string cpf, string accountId, decimal value)
+        public DateTimeOffset? ExpiresOn { get; set; }
+
+        public CreateGiftcardCommand(string company, decimal value)
         {
             Company = company;
-            CPF = cpf;
-            AccountId = accountId;
             Value = value;
         }
 
@@ -33,14 +29,22 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
             if (string.IsNullOrEmpty(Company))
                 yield return new ValidationResult("invalid company.", new[] { nameof(Company) });
 
-            if (string.IsNullOrEmpty(CPF))
-                yield return new ValidationResult("invalid CPF.", new[] { nameof(CPF) });
-
-            if (string.IsNullOrEmpty(AccountId))
-                yield return new ValidationResult("invalid account.", new[] { nameof(AccountId) });
-
             if (Value == default)
                 yield return new ValidationResult("invalid value.", new[] { nameof(Value) });
+        }
+    }
+
+    internal static class CreateGiftcardCommandExtensions
+    {
+        internal static GiftcardAccount ToDomain(this CreateGiftcardCommand command)
+        {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
+            return (GiftcardAccount)Account.Create(AccountType.Giftcard,
+                command.Company,
+                command.Value,
+                location: command.Location,
+                expiresOn: command.ExpiresOn);
         }
     }
 }

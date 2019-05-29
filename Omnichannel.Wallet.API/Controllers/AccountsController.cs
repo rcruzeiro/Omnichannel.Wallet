@@ -152,6 +152,38 @@ namespace Omnichannel.Wallet.API.Controllers
             }
         }
         /// <summary>
+        /// Creates a new giftcard account.
+        /// </summary>
+        /// <returns>The giftcard unique id.</returns>
+        /// <param name="request">Request with new giftcard basic data.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="200">New giftcard created with success.</response>
+        /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [ProducesResponseType(typeof(CreateGiftcardResponse), 200)]
+        [ProducesResponseType(typeof(CreateGiftcardResponse), 500)]
+        [HttpPost("giftcard")]
+        public async Task<IActionResult> CreateGiftcard([FromBody]CreateGiftcardRequest request, CancellationToken cancellationToken = default)
+        {
+            CreateGiftcardResponse response = new CreateGiftcardResponse();
+
+            try
+            {
+                var result = await _accountsAppService.CreateGiftcard(request.Command, cancellationToken);
+
+                response.StatusCode = 200;
+                response.Data = result;
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Messages.Add(ResponseMessage.Create(ex, ""));
+
+                return StatusCode(500, response);
+            }
+        }
+        /// <summary>
         /// Consumes the account.
         /// </summary>
         /// <param name="request">Request with consume data.</param>
@@ -159,8 +191,8 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <response code="201">Account balance changed with success.</response>
         /// <response code="500">Internal Server Error. See response messages for details.</response>
         [ProducesResponseType(204)]
-        [ProducesResponseType(typeof(CreateVoucherResponse), 500)]
-        [HttpPut]
+        [ProducesResponseType(typeof(ConsumeAccountResponse), 500)]
+        [HttpPut("consume")]
         public async Task<IActionResult> ConsumeAccount([FromBody]ConsumeAccountRequest request, CancellationToken cancellationToken = default)
         {
             ConsumeAccountResponse response = new ConsumeAccountResponse();
@@ -168,6 +200,62 @@ namespace Omnichannel.Wallet.API.Controllers
             try
             {
                 await _accountsAppService.Consume(request.Command, cancellationToken);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Messages.Add(ResponseMessage.Create(ex, ""));
+
+                return StatusCode(500, response);
+            }
+        }
+        /// <summary>
+        /// Register the giftcard with a new CPF.
+        /// </summary>
+        /// <param name="request">Request with register data.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="201">Giftcard is now registered.</response>
+        /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(RegisterGiftcardResponse), 500)]
+        [HttpPut("register")]
+        public async Task<IActionResult> RegisterGiftcard([FromBody]RegisterGiftcardRequest request, CancellationToken cancellationToken = default)
+        {
+            RegisterGiftcardResponse response = new RegisterGiftcardResponse();
+
+            try
+            {
+                await _accountsAppService.Register(request.Command, cancellationToken);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Messages.Add(ResponseMessage.Create(ex, ""));
+
+                return StatusCode(500, response);
+            }
+        }
+        /// <summary>
+        /// Charges the giftcard.
+        /// </summary>
+        /// <param name="request">Request with charge data.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <response code="201">Account balance changed with success.</response>
+        /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ChargeGiftcardResponse), 500)]
+        [HttpPut("charge")]
+        public async Task<IActionResult> ChargeGiftcard([FromBody]ChargeGiftcardRequest request, CancellationToken cancellationToken = default)
+        {
+            ChargeGiftcardResponse response = new ChargeGiftcardResponse();
+
+            try
+            {
+                await _accountsAppService.Charge(request.Command, cancellationToken);
 
                 return NoContent();
             }

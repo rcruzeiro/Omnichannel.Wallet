@@ -32,7 +32,37 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts
             { throw ex; }
         }
 
+        public async Task<string> CreateGiftcard(CreateGiftcardCommand command, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await _accountsCommandHandler.ExecuteAsync(command, cancellationToken);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
         public async Task Consume(ConsumeAccountCommand command, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _accountsCommandHandler.ExecuteAsync(command, cancellationToken);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public async Task Register(RegisterGiftcardCommand command, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _accountsCommandHandler.ExecuteAsync(command, cancellationToken);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public async Task Charge(ChargeGiftcardCommand command, CancellationToken cancellationToken = default)
         {
             try
             {

@@ -43,7 +43,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 
     internal static class CreateVoucherCommandExtensions
     {
-        internal static Account ToDomain(this CreateVoucherCommand command)
+        internal static VoucherAccount ToDomain(this CreateVoucherCommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
 

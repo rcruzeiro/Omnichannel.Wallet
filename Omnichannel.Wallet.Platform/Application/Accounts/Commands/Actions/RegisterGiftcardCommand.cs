@@ -4,7 +4,7 @@ using Core.Framework.Cqrs.Commands;
 
 namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 {
-    public class ConsumeAccountCommand : ICommand
+    public class RegisterGiftcardCommand : ICommand
     {
         [Required]
         public string Company { get; set; }
@@ -15,17 +15,11 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
         [Required]
         public string AccountId { get; set; }
 
-        [Required]
-        public decimal Value { get; set; }
-
-        public string Location { get; set; }
-
-        public ConsumeAccountCommand(string company, string cpf, string accountId, decimal value)
+        public RegisterGiftcardCommand(string company, string cpf, string accountId)
         {
             Company = company;
             CPF = cpf;
             AccountId = accountId;
-            Value = value;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -38,9 +32,6 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 
             if (string.IsNullOrEmpty(AccountId))
                 yield return new ValidationResult("invalid account.", new[] { nameof(AccountId) });
-
-            if (Value == default)
-                yield return new ValidationResult("invalid value.", new[] { nameof(Value) });
         }
     }
 }

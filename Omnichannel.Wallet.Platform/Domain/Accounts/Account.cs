@@ -28,7 +28,7 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
         protected Account()
         { }
 
-        public virtual void Consume(decimal value)
+        public virtual void Consume(decimal value, string location = null)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
                 Balance -= value;
                 UpdatedAt = DateTimeOffset.Now;
 
-                var transaction = new Transaction(this, OperationType.Debit, EventType.Consume, value);
+                var transaction = new Transaction(this, location, OperationType.Debit, EventType.Consume, value);
                 _transactions.Add(transaction);
             }
             catch (Exception ex)
@@ -56,6 +56,9 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
             {
                 case AccountType.Voucher:
                     account = new VoucherAccount(company, cpf, initialValue, expiresOn, extensionAttributes);
+                    break;
+                case AccountType.Giftcard:
+                    account = new GiftcardAccount(company, initialValue, expiresOn, extensionAttributes);
                     break;
                 default:
                     throw new KeyNotFoundException("invalid account type.");

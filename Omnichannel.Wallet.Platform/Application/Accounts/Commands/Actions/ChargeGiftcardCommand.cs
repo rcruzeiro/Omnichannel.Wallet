@@ -4,7 +4,7 @@ using Core.Framework.Cqrs.Commands;
 
 namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 {
-    public class ConsumeAccountCommand : ICommand
+    public class ChargeGiftcardCommand : ICommand
     {
         [Required]
         public string Company { get; set; }
@@ -20,7 +20,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
 
         public string Location { get; set; }
 
-        public ConsumeAccountCommand(string company, string cpf, string accountId, decimal value)
+        public ChargeGiftcardCommand(string company, string cpf, string accountId, decimal value)
         {
             Company = company;
             CPF = cpf;
@@ -40,7 +40,7 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions
                 yield return new ValidationResult("invalid account.", new[] { nameof(AccountId) });
 
             if (Value == default)
-                yield return new ValidationResult("invalid value.", new[] { nameof(Value) });
+                yield return new ValidationResult("invalid charge value.", new[] { nameof(Value) });
         }
     }
 }
