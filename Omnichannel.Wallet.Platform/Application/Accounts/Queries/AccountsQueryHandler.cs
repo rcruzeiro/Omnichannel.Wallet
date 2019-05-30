@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Framework.Cqrs.Queries;
 using Omnichannel.Wallet.Platform.Application.Accounts.Queries.DTOs;
 using Omnichannel.Wallet.Platform.Application.Accounts.Queries.Filters;
 using Omnichannel.Wallet.Platform.Domain.Accounts;
@@ -22,9 +23,8 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Queries
         {
             try
             {
-                if (filter == null) throw new ArgumentNullException(nameof(filter));
-
-                filter.Validate(null);
+                // validate filter
+                ValidateFilter(filter);
 
                 var dtos = new List<AccountDTO>();
                 var accounts = await _accountRepository.GetAsync(filter, cancellationToken);
@@ -42,9 +42,8 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Queries
         {
             try
             {
-                if (filter == null) throw new ArgumentNullException(nameof(filter));
-
-                filter.Validate(null);
+                // validate filter
+                ValidateFilter(filter);
 
                 var accounts = await _accountRepository.GetAsync(filter, cancellationToken);
 
@@ -54,6 +53,14 @@ namespace Omnichannel.Wallet.Platform.Application.Accounts.Queries
             }
             catch (Exception ex)
             { throw ex; }
+        }
+
+        private void ValidateFilter<T>(T filter)
+            where T : class, IFilter
+        {
+            if (filter == null) throw new ArgumentNullException(nameof(filter));
+
+            filter.Validate(null);
         }
     }
 }

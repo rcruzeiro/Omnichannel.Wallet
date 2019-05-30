@@ -20,6 +20,11 @@
         <Folder Include="Infrastructure\Database\MySQL\" />
         <Folder Include="Infrastructure\Database\MySQL\Repositories\" />
         <Folder Include="Infrastructure\Database\MySQL\Configurations\" />
+        <Folder Include="Infrastructure\Providers\" />
+        <Folder Include="Infrastructure\Providers\Blockchain\" />
+        <Folder Include="Infrastructure\Providers\Blockchain\Models\" />
+        <Folder Include="Infrastructure\Database\Mongo\" />
+        <Folder Include="Infrastructure\Database\Mongo\Repositories\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -31,5 +36,6 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.4" />
+        <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
     </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Omnichannel.Wallet.Platform.Infrastructure.IOC;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -86,6 +87,7 @@ namespace Omnichannel.Wallet.API
               .AddJsonOptions(options =>
               {
                   options.SerializerSettings.Culture = new CultureInfo("pt-BR");
+                  options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

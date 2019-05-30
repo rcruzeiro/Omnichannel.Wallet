@@ -6,8 +6,11 @@ using Omnichannel.Wallet.Platform.Application.Accounts;
 using Omnichannel.Wallet.Platform.Application.Accounts.Commands;
 using Omnichannel.Wallet.Platform.Application.Accounts.Queries;
 using Omnichannel.Wallet.Platform.Domain.Accounts;
+using Omnichannel.Wallet.Platform.Infrastructure.Database.Mongo.Repositories;
 using Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL;
 using Omnichannel.Wallet.Platform.Infrastructure.Database.MySQL.Repositories;
+using Omnichannel.Wallet.Platform.Infrastructure.Providers.Blockchain;
+using Omnichannel.Wallet.Platform.Infrastructure.Providers.Blockchain.Models;
 
 namespace Omnichannel.Wallet.Platform.Infrastructure.IOC
 {
@@ -30,6 +33,11 @@ namespace Omnichannel.Wallet.Platform.Infrastructure.IOC
 
             // repositories
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IWalletBlockchainRepository>(provider =>
+                new WalletBlockchainRepository(configuration.GetConnectionString("DefaultNoSQL")));
+
+            // services
+            services.AddScoped<IWalletBlockchainService, WalletBlockchainService>();
 
             // commands
             services.AddScoped<IAccountsCommandHandler, AccountsCommandHandler>();
