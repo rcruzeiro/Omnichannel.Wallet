@@ -46,6 +46,9 @@ namespace Omnichannel.Wallet.API
                     config.AddEnvironmentVariables();
                     Configuration = config.Build();
                 })
-                .UseStartup<Startup>();
+                .UseKestrel()
+                .UseUrls("http://*:8081")
+                .UseStartup<Startup>()
+                .UseIISIntegration();
     }
 }

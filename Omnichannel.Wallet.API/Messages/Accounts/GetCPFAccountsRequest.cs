@@ -2,7 +2,10 @@
 
 namespace Omnichannel.Wallet.API.Messages.Accounts
 {
-    public class GetCPFAccountsRequest : BaseRequest
+    public class GetCPFAccountsRequest :
+        BaseRequest,
+        IMultitenantOperation,
+        ISecurityOperation
     {
         public string Company { get; set; }
 

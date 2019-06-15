@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Framework.API.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Omnichannel.Wallet.API.Messages.Accounts;
 using Omnichannel.Wallet.Platform.Application.Accounts;
@@ -10,8 +11,10 @@ using Omnichannel.Wallet.Platform.Domain.Accounts;
 
 namespace Omnichannel.Wallet.API.Controllers
 {
+    [Authorize("Bearer")]
     [Produces("application/json")]
-    [Route("{Company}/[controller]")]
+    [Consumes("application/json")]
+    [Route("[controller]")]
     public class AccountsController : Controller
     {
         readonly IAccountsAppService _accountsAppService;
@@ -30,7 +33,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <response code="500">Internal Server Error. See response messages for details.</response>
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 200)]
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 500)]
-        [HttpGet("{CPF}")]
+        [HttpGet]
         public async Task<IActionResult> GetCPFAccounts([FromRoute]GetCPFAccountsRequest request, CancellationToken cancellationToken = default)
         {
             GetCPFAccountsResponse response = new GetCPFAccountsResponse();
@@ -63,7 +66,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <response code="500">Internal Server Error. See response messages for details.</response>
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 200)]
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 500)]
-        [HttpGet("{CPF}/voucher")]
+        [HttpGet("voucher")]
         public async Task<IActionResult> GetCPFVoucherAccounts([FromRoute]GetCPFAccountsRequest request, CancellationToken cancellationToken = default)
         {
             GetCPFAccountsResponse response = new GetCPFAccountsResponse();
@@ -96,7 +99,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <response code="500">Internal Server Error. See response messages for details.</response>
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 200)]
         [ProducesResponseType(typeof(GetCPFAccountsResponse), 500)]
-        [HttpGet("{CPF}/giftcard")]
+        [HttpGet("giftcard")]
         public async Task<IActionResult> GetCPFGiftcardAccounts([FromRoute]GetCPFAccountsRequest request, CancellationToken cancellationToken = default)
         {
             GetCPFAccountsResponse response = new GetCPFAccountsResponse();
@@ -129,7 +132,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <response code="500">Internal Server Error. See response messages for details.</response>
         [ProducesResponseType(typeof(GetCPFAccountByAccountIdResponse), 200)]
         [ProducesResponseType(typeof(GetCPFAccountByAccountIdResponse), 500)]
-        [HttpGet("{CPF}/{AccountId}")]
+        [HttpGet("{AccountId}")]
         public async Task<IActionResult> GetCPFAccountByAccountId([FromRoute]GetCPFAccountByAccountIdRequest request, CancellationToken cancellationToken = default)
         {
             GetCPFAccountByAccountIdResponse response = new GetCPFAccountByAccountIdResponse();
@@ -160,6 +163,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <response code="200">New voucher created with success.</response>
         /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [AllowAnonymous]
         [ProducesResponseType(typeof(CreateVoucherResponse), 200)]
         [ProducesResponseType(typeof(CreateVoucherResponse), 500)]
         [HttpPost("voucher")]
@@ -192,6 +196,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <response code="200">New giftcard created with success.</response>
         /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [AllowAnonymous]
         [ProducesResponseType(typeof(CreateGiftcardResponse), 200)]
         [ProducesResponseType(typeof(CreateGiftcardResponse), 500)]
         [HttpPost("giftcard")]

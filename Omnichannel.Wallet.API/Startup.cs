@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Omnichannel.Wallet.API.Filters;
 using Omnichannel.Wallet.Platform.Infrastructure.IOC;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -48,6 +49,7 @@ namespace Omnichannel.Wallet.API
             app.UseStatusCodePages();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             // .net core 2.2 health check
             app.UseHealthChecks("/status");
@@ -83,13 +85,14 @@ namespace Omnichannel.Wallet.API
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials());
-            }).AddMvc()
-              .AddJsonOptions(options =>
+            }).AddMvc(options =>
+            {
+                options.Filters.Add(new AuthorizationFilterAttribute());
+            }).AddJsonOptions(options =>
               {
                   options.SerializerSettings.Culture = new CultureInfo("pt-BR");
                   options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-              })
-              .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+              }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddHealthChecks();
         }

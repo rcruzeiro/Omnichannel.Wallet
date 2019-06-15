@@ -7,12 +7,14 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
 {
     public abstract class Account : Entity, IAggregationRoot
     {
+        public string Company { get; set; }
+
         public string AccountId { get; protected set; }
 
         protected int accountType;
         public virtual AccountType AccountType => (AccountType)accountType;
 
-        public string CPF { get; protected set; }
+        public string CPF { get; set; }
 
         public decimal InitialValue { get; protected set; }
 
@@ -48,9 +50,15 @@ namespace Omnichannel.Wallet.Platform.Domain.Accounts
 
         protected abstract void SetNewAccountId();
 
-        public static Account Create(AccountType accountType, string company, decimal initialValue, string cpf = null, string location = null, DateTimeOffset? expiresOn = null, JObject extensionAttributes = null)
+        public static Account Create(AccountType accountType,
+            string company,
+            decimal initialValue,
+            string cpf = null,
+            string location = null,
+            DateTimeOffset? expiresOn = null,
+            JObject extensionAttributes = null)
         {
-            Account account = null;
+            Account account;
 
             switch (accountType)
             {
