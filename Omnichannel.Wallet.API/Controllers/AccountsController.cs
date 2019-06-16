@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Omnichannel.Wallet.API.Messages.Accounts;
 using Omnichannel.Wallet.Platform.Application.Accounts;
+using Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions;
 using Omnichannel.Wallet.Platform.Application.Accounts.Queries.Filters;
 using Omnichannel.Wallet.Platform.Domain.Accounts;
 
@@ -228,6 +229,7 @@ namespace Omnichannel.Wallet.API.Controllers
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <response code="201">Account balance changed with success.</response>
         /// <response code="500">Internal Server Error. See response messages for details.</response>
+        [AllowAnonymous]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ConsumeAccountResponse), 500)]
         [HttpPut("consume")]
@@ -265,7 +267,8 @@ namespace Omnichannel.Wallet.API.Controllers
 
             try
             {
-                await _accountsAppService.Register(request.Command, cancellationToken);
+                var command = new RegisterGiftcardCommand(request.Company, request.CPF, request.AccountId);
+                await _accountsAppService.Register(command, cancellationToken);
 
                 return NoContent();
             }
@@ -293,7 +296,9 @@ namespace Omnichannel.Wallet.API.Controllers
 
             try
             {
-                await _accountsAppService.Charge(request.Command, cancellationToken);
+                var command = new ChargeGiftcardCommand(request.Company, request.CPF, request.AccountId, request.Value)
+                { Location = request.Location };
+                await _accountsAppService.Charge(command, cancellationToken);
 
                 return NoContent();
             }

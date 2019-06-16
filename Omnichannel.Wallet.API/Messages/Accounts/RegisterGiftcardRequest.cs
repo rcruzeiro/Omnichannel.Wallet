@@ -1,10 +1,19 @@
 ﻿using Core.Framework.API.Messages;
-using Omnichannel.Wallet.Platform.Application.Accounts.Commands.Actions;
+using Omnichannel.Wallet.API.Attributes;
 
 namespace Omnichannel.Wallet.API.Messages.Accounts
 {
-    public class RegisterGiftcardRequest : BaseRequest
+    public class RegisterGiftcardRequest :
+        BaseRequest,
+        IMultitenantOperation,
+        ISecurityOperation
     {
-        public RegisterGiftcardCommand Command { get; set; }
+        [SwaggerExclude]
+        public string Company { get; set; }
+
+        [SwaggerExclude]
+        public string CPF { get; set; }
+
+        public string AccountId { get; set; }
     }
 }
